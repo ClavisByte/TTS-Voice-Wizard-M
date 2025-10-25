@@ -15,7 +15,7 @@ namespace OSCVRCWiz.Services.Speech.TextToSpeech.TTSEngines
             byte[] result = null;
             try
             {
-                result = await CallGladosAPIAsync(TTSMessageQueued.text);
+                result = await CallGladosAPIAsync(TTSMessageQueued.text,TTSMessageQueued.Voice,TTSMessageQueued.Style);
 
             }
             catch (Exception ex)
@@ -37,7 +37,7 @@ namespace OSCVRCWiz.Services.Speech.TextToSpeech.TTSEngines
 
         }
 
-        public static async Task<byte[]> CallGladosAPIAsync(string text)
+        public static async Task<byte[]> CallGladosAPIAsync(string text, string voice, string language)
         {
 
 
@@ -71,7 +71,7 @@ namespace OSCVRCWiz.Services.Speech.TextToSpeech.TTSEngines
             string url = $"http://{address}:{port}/synthesize/";
 
             // string textParam = HttpUtility.UrlEncode(text);
-            string requestUrl = $"{url}?{text}";
+            string requestUrl = $"{url}?{text}&speaker={voice}&language={language}";
 
             var response = await client.GetAsync(requestUrl).ConfigureAwait(false);
             
@@ -90,11 +90,18 @@ namespace OSCVRCWiz.Services.Speech.TextToSpeech.TTSEngines
             accents.SelectedIndex = 0;
 
             voices.Items.Clear();
-            voices.Items.Add("Local 1");
+            voices.Items.Add("EN-BR");
+            voices.Items.Add("EN-US");
+            voices.Items.Add("JP");
+            voices.Items.Add("KR");
+            voices.Items.Add("ZH");
             voices.SelectedIndex = 0;
 
             styles.Items.Clear();
-            styles.Items.Add("default");
+            styles.Items.Add("EN");
+            styles.Items.Add("JP");
+            styles.Items.Add("KR");
+            styles.Items.Add("ZH");
             styles.SelectedIndex = 0;
 
             styles.Enabled = false;
